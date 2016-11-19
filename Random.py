@@ -1,8 +1,11 @@
-from hlt import *
-from networking import *
+import random
+
+from hal.common.constants import DIRECTIONS
+from hal.common.hlt import Location, Move
+from hal.common.networking import getFrame, getInit, sendFrame, sendInit
 
 myID, gameMap = getInit()
-sendInit("MyPythonBot")
+sendInit("RandomBot")
 
 while True:
     moves = []
