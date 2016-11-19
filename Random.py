@@ -1,18 +1,17 @@
 import random
+from hal.common.hlt import *
+from hal.common.networking import *
 
-from hal.common.constants import DIRECTIONS
-from hal.common.hlt import Location, Move
-from hal.common.networking import getFrame, getInit, sendFrame, sendInit
-
-myID, gameMap = getInit()
-sendInit("RandomBot")
+my_id, game_map = getInit()
+sendInit("Random")
 
 while True:
     moves = []
-    gameMap = getFrame()
-    for y in range(gameMap.height):
-        for x in range(gameMap.width):
-            location = Location(x, y)
-            if gameMap.getSite(location).owner == myID:
-                moves.append(Move(location, random.choice(DIRECTIONS)))
+    game_map = getFrame()
+    for y in range(game_map.height):
+        for x in range(game_map.width):
+            loc = game_map.get_location(x, y)
+            if loc.owner == my_id:
+                moves.append(Move(loc, random.choice(DIRECTIONS.all())))
+
     sendFrame(moves)

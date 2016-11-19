@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cp HAL.py MyBot.py
+tar -czf submission.zip MyBot.py hal

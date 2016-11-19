@@ -1,29 +1,29 @@
 import copy
 import math
 
-from .constants import *
+from .constants import DIRECTIONS
 
 
-class Location:
-    def __init__(self, x=0, y=0):
+class Location(object):
+    def __init__(self, x=0, y=0, owner=0, strength=0, production=0):
         self.x = x
         self.y = y
-
-
-class Site:
-    def __init__(self, owner=0, strength=0, production=0):
         self.owner = owner
         self.strength = strength
         self.production = production
 
 
-class Move:
-    def __init__(self, loc=0, direction=0):
+class Move(object):
+    def __init__(self, loc, direction):
         self.loc = loc
         self.direction = direction
 
+    def __str__(self):
+        return '{x} {y} {dir} '.format(
+            x=self.loc.x, y=self.loc.y, dir=self.direction)
 
-class GameMap:
+
+class GameMap(object):
     def __init__(self, width=0, height=0, numberOfPlayers=0):
         self.width = width
         self.height = height
@@ -32,11 +32,13 @@ class GameMap:
         for y in range(0, self.height):
             row = []
             for x in range(0, self.width):
-                row.append(Site(0, 0, 0))
+                row.append(Location(x, y, 0, 0, 0))
             self.contents.append(row)
 
-    def inBounds(self, l):
-        return l.x >= 0 and l.x < self.width and l.y >= 0 and l.y < self.height
+    def in_bounds(self, l):
+        is_within_x = 0 <= l.x < self.width
+        is_within_y = 0 <= l.y < self.height
+        return is_within_x and is_within_y
 
     def getDistance(self, l1, l2):
         dx = abs(l1.x - l2.x)
@@ -62,31 +64,20 @@ class GameMap:
             dy += self.height
         return math.atan2(dy, dx)
 
-    def getLocation(self, loc, direction):
-        l = copy.deepcopy(loc)
-        if direction != STILL:
-            if direction == NORTH:
-                if l.y == 0:
-                    l.y = self.height - 1
-                else:
-                    l.y -= 1
-            elif direction == EAST:
-                if l.x == self.width - 1:
-                    l.x = 0
-                else:
-                    l.x += 1
-            elif direction == SOUTH:
-                if l.y == self.height - 1:
-                    l.y = 0
-                else:
-                    l.y += 1
-            elif direction == WEST:
-                if l.x == 0:
-                    l.x = self.width - 1
-                else:
-                    l.x -= 1
-        return l
+    def translate_location(self, x, y, direction):
+        if direction == DIRECTIONS.STILL:
+            return x, y
+        elif direction == DIRECTIONS.NORTH:
+            y = y - 1 if y else self.height - 1
+        elif direction == DIRECTIONS.EAST:
+            x = (x + 1) % self.width
+        elif direction == DIRECTIONS.SOUTH:
+            y = (y + 1) % self.height
+        elif direction == DIRECTIONS.WEST:
+            x = x - 1 if x else self.width - 1
 
-    def getSite(self, l, direction=STILL):
-        l = self.getLocation(l, direction)
-        return self.contents[l.y][l.x]
+        return x, y
+
+    def get_location(self, x, y, direction=DIRECTIONS.STILL):
+        x, y = self.translate_location(x, y, direction)
+        return self.contents[y][x]

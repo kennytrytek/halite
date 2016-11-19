@@ -1,11 +1,21 @@
-STILL = 0
-NORTH = 1
-EAST = 2
-SOUTH = 3
-WEST = 4
+class DIRECTIONS:
+    STILL = 0
+    NORTH = 1
+    EAST = 2
+    SOUTH = 3
+    WEST = 4
 
-DIRECTIONS = [a for a in range(0, 5)]
-CARDINALS = [a for a in range(1, 5)]
+    @classmethod
+    def all(cls):
+        return [cls.STILL, cls.NORTH, cls.EAST, cls.SOUTH, cls.WEST]
 
-ATTACK = 0
-STOP_ATTACK = 1
+
+class CARDINALS:
+    NORTH = 1
+    EAST = 2
+    SOUTH = 3
+    WEST = 4
+
+    @classmethod
+    def all(cls):
+        return [cls.NORTH, cls.EAST, cls.SOUTH, cls.WEST]

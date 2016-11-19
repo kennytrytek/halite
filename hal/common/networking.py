@@ -8,11 +8,11 @@ _height = -1
 
 
 def serializeMoveSet(moves):
-    returnString = ""
+    serial_move_set = ''
     for move in moves:
-        returnString += str(move.loc.x) + " " + str(move.loc.y) + " " + str(
-            move.direction) + " "
-    return returnString
+        serial_move_set += str(move)
+
+    return serial_move_set
 
 
 def deserializeMapSize(inputString):
