@@ -33,7 +33,7 @@ def deserializeProductions(inputString):
         _productions.append(row)
 
 
-def deserializeMap(inputString, my_id):
+def deserializeMap(inputString):
     splitString = inputString.split(" ")
 
     m = GameMap(_width, _height)
@@ -75,7 +75,7 @@ def getInit():
     playerTag = int(getString())
     deserializeMapSize(getString())
     deserializeProductions(getString())
-    m = deserializeMap(getString(), playerTag)
+    m = deserializeMap(getString())
 
     return (playerTag, m)
 
@@ -84,8 +84,8 @@ def sendInit(name):
     sendString(name)
 
 
-def getFrame(my_id):
-    return deserializeMap(getString(), my_id)
+def getFrame():
+    return deserializeMap(getString())
 
 
 def sendFrame(moves):
