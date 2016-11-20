@@ -19,3 +19,5 @@ class CARDINALS:
     @classmethod
     def all(cls):
         return [cls.NORTH, cls.EAST, cls.SOUTH, cls.WEST]
+
+MAX_STRENGTH = 255
