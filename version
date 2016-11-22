@@ -5,6 +5,12 @@
 # Updates run shell script.
 
 cp -R hal "v$1"
-echo "from v$1 import main\n\nmain.main()\n" > "./v$1.py"
-echo "#!/usr/bin/env bash\n\n./halite -d \"30 30\" \"python HAL.py\" \"python v$1.py\"" > "./run"
+echo "from v$1 import main
+
+main.main()" > "./v$1.py"
+
+echo "#!/usr/bin/env bash
+
+./halite -d \"30 30\" \"python HAL.py\" \"python v$1.py\"" > "./run"
+
 chmod +x ./run
