@@ -2,4 +2,4 @@
 
 rm -f submission.zip
 cp HAL.py MyBot.py
-tar -cf submission.zip MyBot.py hal
+zip -rX submission.zip MyBot.py hal

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Usage: version vx
+# Creates a vx directory and a corresponding bot file.
+# Updates run shell script.
+
+cp -R hal "v$1"
+echo "from v$1 import main\n\nmain.main()\n" > "./v$1.py"
+echo "#!/usr/bin/env bash\n\n./halite -d \"30 30\" \"python HAL.py\" \"python v$1.py\"" > "./run"
+chmod +x ./run
