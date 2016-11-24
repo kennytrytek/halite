@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 
-# ./halite -s 3693640182 -d "30 30" "python HAL.py" "python v9.py"
-#./halite -s 3218539606 -d "40 40" "python HAL.py" "python v9.py"
-./halite -d "40 40" "python HAL.py" "python v9.py"
+./halite -d "30 30" "python HAL.py" "python v10.py"
