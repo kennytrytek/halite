@@ -54,20 +54,57 @@ class GameMap(object):
 
     def closest_non_owned_direction(self, x, y, my_id):
         starting_loc = self.get_location(x, y)
-        left = right = up = down = starting_loc
-        while True:  # Holds as long as map is square
-            productions = []
+        left = nw = sw = right = ne = se = up = down = starting_loc
+        distance = 0
+        max_prod_loc = Location(x, y, production=0)
+        max_prod_dir = None
+
+        while True:
+            distance += 1
+
+            right = self.get_location(right.x, right.y, EAST)
+            if right.owner != my_id and right.owner != 0:
+                return EAST, right
+            elif right.owner == 0 and right.production > max_prod_loc.production:
+                max_prod_loc = right
+                max_prod_dir = EAST
+
+            down = self.get_location(down.x, down.y, SOUTH)
+            if down.owner != my_id and down.owner != 0:
+                return SOUTH, down
+            elif down.owner == 0 and down.production > max_prod_loc.production:
+                max_prod_loc = down
+                max_prod_dir = SOUTH
+
             left = self.get_location(left.x, left.y, WEST)
             if left.owner != my_id and left.owner != 0:
-                return WEST
-            elif left.owner == 0:
-                productions.append((left.production, WEST))
+                return WEST, left
+            elif left.owner == 0 and left.production > max_prod_loc.production:
+                max_prod_loc = left
+                max_prod_dir = WEST
 
             up = self.get_location(up.x, up.y, NORTH)
             if up.owner != my_id and up.owner != 0:
-                return NORTH
-            elif up.owner == 0:
-                productions.append((up.production, NORTH))
+                return NORTH, up
+            elif up.owner == 0 and up.production > max_prod_loc.production:
+                max_prod_loc = up
+                max_prod_dir = NORTH
+
+            if distance >= 3 and max_prod_loc.production > 0:
+                return max_prod_dir, max_prod_loc
+
+            if starting_loc.x == left.x:
+                break
+
+        direction = 10
+        loc = self.get_location(x, y, direction)
+        return direction, loc
+
+    def closest_non_owned_direction_v9(self, x, y, my_id):
+        starting_loc = self.get_location(x, y)
+        left = right = up = down = starting_loc
+        while True:  # Holds as long as map is square
+            productions = []
 
             right = self.get_location(right.x, right.y, EAST)
             if right.owner != my_id and right.owner != 0:
@@ -80,6 +117,18 @@ class GameMap(object):
                 return SOUTH
             elif down.owner == 0:
                 productions.append((down.production, SOUTH))
+
+            left = self.get_location(left.x, left.y, WEST)
+            if left.owner != my_id and left.owner != 0:
+                return WEST
+            elif left.owner == 0:
+                productions.append((left.production, WEST))
+
+            up = self.get_location(up.x, up.y, NORTH)
+            if up.owner != my_id and up.owner != 0:
+                return NORTH
+            elif up.owner == 0:
+                productions.append((up.production, NORTH))
 
             if productions:
                 return sorted(productions, reverse=True)[0][1]
